@@ -17,7 +17,7 @@ const SkillsCard = ({
   percent: string;
   form: FormInstance;
 }) => {
-  const { loading, editSkill, deleteSkill } = useSkillsStoreOfClient();
+  const { loading, editData, deleteData } = useSkillsStoreOfClient();
   return (
     <Fragment>
       <Card
@@ -32,7 +32,7 @@ const SkillsCard = ({
               Modal.confirm({
                 title: "Do you want to delete this skill?",
                 onOk: () => {
-                  deleteSkill(_id);
+                  deleteData(_id);
                 },
               });
             }}
@@ -40,7 +40,7 @@ const SkillsCard = ({
           />,
           <EditOutlined
             onClick={() => {
-              editSkill(_id, form);
+              editData(_id, form);
             }}
             key="edit"
           />,
@@ -58,7 +58,7 @@ const SkillsCard = ({
           </div>
           <div className="skills__text__box">
             <h2 className="skills__name__title">Skill name: </h2>
-            <h2 className="skills__name__text">{name.slice(0, 10)}</h2>
+            <h2 className="skills__name__text">{name?.slice(0, 10)}</h2>
           </div>
         </Skeleton>
       </Card>

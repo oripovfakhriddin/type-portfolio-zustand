@@ -22,21 +22,21 @@ const ClientSkillsPage = () => {
   const {
     selected,
     loading,
-    skills,
+    data,
     activeTab,
     search,
     activePage,
     total,
     setActivePage,
     handleSearch,
-    getSkills,
+    getData,
     setActiveTab,
-    addSkill,
+    addData,
   } = useSkillsStoreOfClient();
 
   useEffect(() => {
-    getSkills();
-  }, [getSkills]);
+    getData();
+  }, [getData]);
 
   const items: TabsProps["items"] = [
     {
@@ -52,7 +52,7 @@ const ClientSkillsPage = () => {
                   value={search}
                   name="search"
                   onChange={handleSearch}
-                  style={{ width: "100%", flexGrow: 1, padding: "10px 0px" }}
+                  style={{ width: "100%", flexGrow: 1, padding: "10px 10px" }}
                   placeholder="Searching..."
                 />
               </Flex>
@@ -64,21 +64,23 @@ const ClientSkillsPage = () => {
                 )}
               </Flex>
               <Row>
-                {skills.map((el) => {
+                {data.map((skill) => {
                   return (
-                    <Col xs={24} sm={12} md={8} lg={6} key={el._id}>
-                      <SkillsCard key={el._id} {...el} form={form} />
+                    <Col xs={24} sm={12} md={8} lg={6} key={skill._id}>
+                      <SkillsCard key={skill._id} {...skill} form={form} />
                     </Col>
                   );
                 })}
               </Row>
               {total > LIMIT ? (
-                <Pagination
-                  total={total}
-                  pageSize={LIMIT}
-                  current={activePage}
-                  onChange={(page) => setActivePage(page)}
-                />
+                <Flex justify="center" style={{ marginTop: "40px" }}>
+                  <Pagination
+                    total={total}
+                    pageSize={LIMIT}
+                    current={activePage}
+                    onChange={(page) => setActivePage(page)}
+                  />
+                </Flex>
               ) : null}
             </Spin>
           </section>
@@ -96,7 +98,7 @@ const ClientSkillsPage = () => {
               <Form
                 style={{ maxWidth: "500px", width: "100%" }}
                 onFinish={() => {
-                  addSkill(form);
+                  addData(form);
                 }}
                 name="skills"
                 autoComplete="off"
