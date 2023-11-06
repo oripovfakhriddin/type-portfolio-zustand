@@ -1,16 +1,8 @@
 import { Fragment } from "react";
 import { Flex } from "antd";
 import "./style.scss";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 const Header = () => {
-  const navigate = useNavigate();
-
-  // const logOutFunc = () => {
-  //   Cookies.remove(PORT_TOKEN);
-  //   localStorage.removeItem(PORT_USER);
-  //   navigate("/");
-  // };
-
   return (
     <Fragment>
       <header>
