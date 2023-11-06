@@ -1,0 +1,48 @@
+.skills__count__box {
+  border-radius: 10px;
+  padding-top: 14px;
+  padding-bottom: 14px;
+  color: rgb(135, 4, 4);
+  background-color: rgb(230, 239, 161);
+  margin-top: 10px;
+  margin-bottom: 20px;
+  transition: 0.5s;
+  p {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-bottom: 0;
+  }
+}
+
+.ant-tabs-tab.ant-tabs-tab-active {
+  color: red !important;
+}
+
+.ant-tabs-tab-btn {
+  border: 2px solid #1677ff;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 18px;
+  &:hover {
+    color: white !important;
+    background-color: #1677ff;
+  }
+}
+
+.tabs__skill__secoond {
+  .ant-flex {
+    max-width: 500px;
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+
+.ant-input-number-input-wrap,
+.ant-input-number {
+  width: 100%;
+  input {
+    width: 100%;
+  }
+}

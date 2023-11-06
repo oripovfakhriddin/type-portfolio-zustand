@@ -1,0 +1,42 @@
+.skill__cards__salom {
+  transition: 0.5s;
+  background-color: #c9cf8b;
+  &:hover {
+    background-color: #97ddc2;
+  }
+
+  .ant-card-actions {
+    background-color: rgb(131, 168, 131);
+    svg {
+      font-size: 20px;
+    }
+    li:hover {
+      svg {
+        fill: red;
+      }
+    }
+    .action__more {
+      margin-bottom: 0;
+      font-size: 20px;
+      &:hover {
+        color: red;
+      }
+    }
+  }
+}
+
+.skills__text__box {
+  padding-top: 50px;
+}
+
+.skills__name__title {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.skills__name__text {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
