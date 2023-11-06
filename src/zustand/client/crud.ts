@@ -4,6 +4,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import { LIMIT, USER_DATA_STATE, USER_ID } from "../../constants";
 import request from "../../server/request";
 import { FormInstance } from "antd";
+import dayjs from "dayjs";
 
 const crud = <T>(url: string) => {
   interface ClientOfDataStoreType {
@@ -84,7 +85,13 @@ const crud = <T>(url: string) => {
         addData: async (form) => {
           try {
             set((state) => ({ ...state, loading: true }));
-            const data = await form.validateFields();
+            let data = await form.validateFields();
+            if (url === "experiences") {
+              const start = data?.startDate?.toISOString().split("T")[0];
+              const end = data?.endDate?.toISOString().split("T")[0];
+              data = { ...data, startDate: start, endDate: end };
+            }
+
             if (get().selected === null) {
               await request.post(url, data);
             } else {
@@ -100,7 +107,12 @@ const crud = <T>(url: string) => {
         editData: async (id, form) => {
           try {
             set((state) => ({ ...state, loading: true, selected: id }));
-            const { data } = await request.get(`${url}/${id}`);
+            let { data } = await request.get(`${url}/${id}`);
+            if (url === "experiences") {
+              const start = dayjs(data?.startDate);
+              const end = dayjs(data?.endDate);
+              data = { ...data, startDate: start, endDate: end };
+            }
             form.setFieldsValue(data);
             set((state) => ({ ...state, activeTab: "2" }));
           } finally {

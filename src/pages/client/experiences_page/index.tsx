@@ -3,10 +3,10 @@ import useExperiencesStoreOfClient from "../../../zustand/client/experiences";
 import {
   Button,
   Col,
+  DatePicker,
   Flex,
   Form,
   Input,
-  InputNumber,
   Pagination,
   Row,
   Spin,
@@ -16,6 +16,7 @@ import {
 import "./style.scss";
 import { useEffect, Fragment } from "react";
 import { LIMIT } from "../../../constants";
+import ExperiencesCard from "../../../components/cards/experiences";
 
 const ClientExperiencesPage = () => {
   const [form] = Form.useForm();
@@ -67,7 +68,7 @@ const ClientExperiencesPage = () => {
                 {data.map((el) => {
                   return (
                     <Col xs={24} sm={12} md={8} lg={6} key={el._id}>
-                      salom
+                      <ExperiencesCard key={el._id} {...el} form={form} />
                     </Col>
                   );
                 })}
@@ -111,8 +112,8 @@ const ClientExperiencesPage = () => {
                 form={form}
               >
                 <Form.Item
-                  label="Experiences Name"
-                  name="name"
+                  label="Work Name"
+                  name="workName"
                   rules={[
                     {
                       required: true,
@@ -123,28 +124,66 @@ const ClientExperiencesPage = () => {
                   <Input />
                 </Form.Item>
                 <Form.Item
-                  style={{ width: "100%" }}
-                  name="percent"
-                  label="Percent"
+                  name="companyName"
+                  label="Company name:"
                   rules={[
                     {
                       required: true,
-                      type: "number",
-                      min: 0,
-                      max: 100,
                       message: "Please fill!",
                     },
                   ]}
                 >
-                  <InputNumber />
+                  <Input />
                 </Form.Item>
+                <Form.Item
+                  name="description"
+                  label="Description:"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please fill!",
+                    },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+
+                <Flex justify="space-between">
+                  <Form.Item
+                    name="startDate"
+                    label="Start date:"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please fill!",
+                      },
+                    ]}
+                  >
+                    <DatePicker />
+                  </Form.Item>
+                  <Form.Item
+                    name="endDate"
+                    label="End date:"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please fill!",
+                      },
+                    ]}
+                  >
+                    <DatePicker />
+                  </Form.Item>
+                </Flex>
+
                 <Form.Item>
                   <Button
                     style={{ width: "100%" }}
                     type="primary"
                     htmlType="submit"
                   >
-                    {selected === null ? " Add Experiences" : " Save Experiences"}
+                    {selected === null
+                      ? " Add Experiences"
+                      : " Save Experiences"}
                   </Button>
                 </Form.Item>
               </Form>
