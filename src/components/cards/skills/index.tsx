@@ -1,10 +1,14 @@
 import { Fragment } from "react";
-import "./style.scss";
+
 import { Card, FormInstance, Modal, Progress, Skeleton } from "antd";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+
+import { DeleteOutlined,EditOutlined } from "@ant-design/icons";
+
 import useSkillsStoreOfClient from "../../../zustand/client/skills";
 
-const conicColors = { "0%": "#9f0808", "30%": "#e4c356", "70%": "#0aad07" };
+import "./style.scss";
+
+const conicColors = { "0%": "#9f0808", "50%": "#e4c356", "100%": "#0aad07" };
 
 const SkillsCard = ({
   _id,
@@ -58,7 +62,7 @@ const SkillsCard = ({
           </div>
           <div className="skills__text__box">
             <h2 className="skills__name__title">Skill name: </h2>
-            <h2 className="skills__name__text">{name?.slice(0, 10)}</h2>
+            <h2 className="skills__name__text">{name?.slice(0, 20)}</h2>
           </div>
         </Skeleton>
       </Card>

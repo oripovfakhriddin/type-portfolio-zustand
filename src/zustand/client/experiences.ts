@@ -1,5 +1,5 @@
-import crud from "./crud";
 import { UserLoginType } from "./../auth/login";
+import crud from "./crud";
 
 interface ClientOfExperiencesType {
   _id: string;
@@ -14,4 +14,4 @@ interface ClientOfExperiencesType {
 const useExperiencesStoreOfClient =
   crud<ClientOfExperiencesType>("experiences");
 
-  export default useExperiencesStoreOfClient
+export default useExperiencesStoreOfClient;

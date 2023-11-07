@@ -1,19 +1,21 @@
-import "./style.scss";
 import { useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
+
+import { Avatar,Badge, Button, Flex, Layout, Menu, theme } from "antd";
+
 import {
+  AppstoreOutlined,
+  HomeOutlined,
+  LineChartOutlined,
+  LinkedinOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  HomeOutlined,
-  AppstoreOutlined,
-  ReadOutlined,
   NotificationOutlined,
-  LinkedinOutlined,
+  ReadOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 
-import { Layout, Menu, Button, theme, Flex, Badge, Avatar } from "antd";
-
+import "./style.scss";
 import "./style.scss";
 
 const { Header, Sider, Content } = Layout;
@@ -113,8 +115,13 @@ const ClientLayout = () => {
             },
             {
               key: "/client-experiences",
-              icon: <ReadOutlined />,
+              icon: <LineChartOutlined />,
               label: <NavLink to="/client-experiences">Experiences</NavLink>,
+            },
+            {
+              key: "/client-education",
+              icon: <ReadOutlined />,
+              label: <NavLink to="/client-education">Education</NavLink>,
             },
             // {
             //   key: "/experiences",

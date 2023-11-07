@@ -1,7 +1,9 @@
 import { Fragment } from "react";
-import { Flex } from "antd";
-import "./style.scss";
 import { NavLink } from "react-router-dom";
+
+import { Flex } from "antd";
+
+import "./style.scss";
 const Header = () => {
   return (
     <Fragment>

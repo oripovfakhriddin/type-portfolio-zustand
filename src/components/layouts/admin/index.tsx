@@ -1,40 +1,38 @@
 import { useEffect, useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
+
 import {
+  Avatar,
+  Badge,
+  Button,
+  Flex,
+  Layout,
+  Menu,
+  theme,
+} from "antd";
+
+import {
+  AppstoreOutlined,
+  FieldTimeOutlined,
+  HomeOutlined,
+  LaptopOutlined,
+  LinkedinOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  UploadOutlined,
-  HomeOutlined,
-  AppstoreOutlined,
-  UsergroupAddOutlined,
-  FieldTimeOutlined,
-  LaptopOutlined,
-  ReadOutlined,
   NotificationOutlined,
-  LinkedinOutlined,
+  ReadOutlined,
+  UploadOutlined,
+  UsergroupAddOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 
-import {
-  Layout,
-  Menu,
-  Button,
-  theme,
-  // Modal,
-  Flex,
-  Badge,
-  Avatar,
-  // Drawer,
-  // Table,
-} from "antd";
+import useLoginStore from "../../../zustand/auth/login";
 
 import "./style.scss";
-import useLoginStore from "../../../zustand/auth/login";
 
 const { Header, Sider, Content } = Layout;
 
 const AdminLayout = () => {
-  // const navigate = useNavigate();
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
   const { login } = useLoginStore();
@@ -44,39 +42,6 @@ const AdminLayout = () => {
     token: { colorBgContainer },
   } = theme.useToken();
 
-  // const logOutFunc = () => {
-  //   Cookies.remove("cookie");
-  //   localStorage.removeItem("local");
-  //   navigate("/login");
-  // };
-
-  // const columns = [
-  //   {
-  //     title: "Username",
-  //     dataIndex: "username",
-  //     key: "username",
-  //   },
-  //   {
-  //     title: "Action",
-  //     dataIndex: "data",
-  //     key: "data",
-  //     render: (_, data) => {
-  //       return (
-  //         <Button
-  //           type="primary"
-  //           onClick={() => {
-  //             Modal.confirm({
-  //               title: "Do you want to upgrade this user?",
-  //               onOk: () => {},
-  //             });
-  //           }}
-  //         >
-  //           Upgrade
-  //         </Button>
-  //       );
-  //     },
-  //   },
-  // ];
   return (
     <Layout>
       <Sider

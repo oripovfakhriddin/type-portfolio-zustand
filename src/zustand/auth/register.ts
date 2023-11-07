@@ -1,11 +1,13 @@
-import { create } from "zustand";
-import Cookies from "js-cookie";
+import { NavigateFunction } from "react-router-dom";
+
 import { FormInstance } from "antd";
+
+import Cookies from "js-cookie";
+import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-import request from "../../server/request";
 import { TOKEN_PORTFOLIO, USER_PORTFOLIO, USER_STATE } from "../../constants";
-import { NavigateFunction } from "react-router-dom";
+import request from "../../server/request";
 
 interface UserRegisterType {
   token: string;

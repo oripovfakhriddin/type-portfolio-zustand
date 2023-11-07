@@ -1,4 +1,4 @@
-import useExperiencesStoreOfClient from "../../../zustand/client/experiences";
+import { Fragment,useEffect } from "react";
 
 import {
   Button,
@@ -13,11 +13,12 @@ import {
   Tabs,
   TabsProps,
 } from "antd";
-import "./style.scss";
-import { useEffect, Fragment } from "react";
-import { LIMIT } from "../../../constants";
-import ExperiencesCard from "../../../components/cards/experiences";
 
+import ExperiencesCard from "../../../components/cards/experiences";
+import { LIMIT } from "../../../constants";
+import useExperiencesStoreOfClient from "../../../zustand/client/experiences";
+
+import "./style.scss";
 const ClientExperiencesPage = () => {
   const [form] = Form.useForm();
   const {

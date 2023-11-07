@@ -1,12 +1,19 @@
+import { FormInstance } from "antd";
+
+import dayjs from "dayjs";
 import Cookies from "js-cookie";
 import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
-import { LIMIT, USER_DATA_STATE, USER_ID } from "../../constants";
+
+import { LIMIT, USER_ID } from "../../constants";
 import request from "../../server/request";
-import { FormInstance } from "antd";
-import dayjs from "dayjs";
+import { PaginationDataTypes } from "../../types";
 
 const crud = <T>(url: string) => {
+  interface ApiData {
+    pagination: PaginationDataTypes;
+    data: T[];
+  }
+
   interface ClientOfDataStoreType {
     loading: boolean;
     activePage: number;
@@ -24,108 +31,107 @@ const crud = <T>(url: string) => {
     editData: (id: string, form: FormInstance) => void;
   }
 
-  return create<ClientOfDataStoreType>()(
-    persist(
-      (set, get) => ({
-        loading: false,
-        data: [],
-        search: "",
-        selected: null,
-        activePage: 1,
-        total: 0,
-        activeTab: "1",
-        setActiveTab: (key, form) => {
-          if (key === "1") {
-            form.resetFields();
-            set((state) => ({ ...state, selected: null }));
-          }
-          set((state) => ({ ...state, activeTab: key }));
-        },
-        setActivePage: (page) => {
-          set((state) => ({ ...state, activePage: page }));
-          get().getData();
-        },
-        getData: async () => {
-          try {
-            const params = {
-              user: Cookies.get(USER_ID),
-              search: get().search,
-              page: get().activePage,
-              limit: LIMIT,
-            };
-            set((state) => ({ ...state, loading: true }));
-            const {
-              data: { data, pagination },
-            } = await request.get(url, {
-              params,
-            });
+  return create<ClientOfDataStoreType>()((set, get) => ({
+    loading: false,
+    data: [],
+    search: "",
+    selected: null,
+    activePage: 1,
+    total: 0,
+    activeTab: "1",
 
-            set((state) => ({
-              ...state,
-              data: data,
-              total: pagination.total,
-            }));
-          } finally {
-            set((state) => ({ ...state, loading: false }));
-          }
-        },
-        handleSearch: (e) => {
-          set((state) => ({ ...state, search: e.target.value }));
-          get().getData();
-        },
-        deleteData: async (id) => {
-          try {
-            set((state) => ({ ...state, loading: true }));
-            await request.delete(`${url}/${id}`);
-            get().getData();
-          } finally {
-            set((state) => ({ ...state, loading: false }));
-          }
-        },
-        addData: async (form) => {
-          try {
-            set((state) => ({ ...state, loading: true }));
-            let data = await form.validateFields();
-            if (url === "experiences") {
-              const start = data?.startDate?.toISOString().split("T")[0];
-              const end = data?.endDate?.toISOString().split("T")[0];
-              data = { ...data, startDate: start, endDate: end };
-            }
-
-            if (get().selected === null) {
-              await request.post(url, data);
-            } else {
-              await request.put(`${url}/${get().selected}`, data);
-            }
-            set((state) => ({ ...state, activeTab: "1", loading: true }));
-            get().getData();
-            form.resetFields();
-          } finally {
-            set((state) => ({ ...state, loading: false }));
-          }
-        },
-        editData: async (id, form) => {
-          try {
-            set((state) => ({ ...state, loading: true, selected: id }));
-            let { data } = await request.get(`${url}/${id}`);
-            if (url === "experiences") {
-              const start = dayjs(data?.startDate);
-              const end = dayjs(data?.endDate);
-              data = { ...data, startDate: start, endDate: end };
-            }
-            form.setFieldsValue(data);
-            set((state) => ({ ...state, activeTab: "2" }));
-          } finally {
-            set((state) => ({ ...state, loading: false }));
-          }
-        },
-      }),
-      {
-        name: USER_DATA_STATE,
-        storage: createJSONStorage(() => localStorage),
+    getData: async () => {
+      try {
+        const params = {
+          user: Cookies.get(USER_ID),
+          search: get().search,
+          page: get().activePage,
+          limit: LIMIT,
+        };
+        set((state) => ({ ...state, loading: true }));
+        const {
+          data: {
+            data,
+            pagination: { total },
+          },
+        } = await request.get<ApiData>(url, {
+          params,
+        });
+        set((state) => ({ ...state, data, total }));
+      } finally {
+        set((state) => ({ ...state, loading: false }));
       }
-    )
-  );
+    },
+
+    setActiveTab: async (key, form) => {
+      if (key === "1") {
+        form.resetFields();
+        set((state) => ({ ...state, selected: null }));
+      }
+      set((state) => ({ ...state, activeTab: key }));
+    },
+
+    setActivePage: async (page) => {
+      set((state) => ({ ...state, activePage: page }));
+      get().getData();
+    },
+
+    handleSearch: async (e) => {
+      set((state) => ({ ...state, search: e.target.value }));
+      get().getData();
+    },
+
+    deleteData: async (id) => {
+      try {
+        set((state) => ({ ...state, loading: true }));
+        await request.delete(`${url}/${id}`);
+        get().getData();
+      } finally {
+        set((state) => ({ ...state, loading: false }));
+      }
+    },
+
+    addData: async (form) => {
+      try {
+        set((state) => ({ ...state, loading: true }));
+        let data = await form.validateFields();
+
+        if (url === "experiences" || url === "education") {
+          const start: string = data?.startDate?.toISOString().split("T")[0];
+          const end: string = data?.endDate?.toISOString().split("T")[0];
+          data = { ...data, startDate: start, endDate: end };
+        }
+
+        if (get().selected === null) {
+          await request.post(url, data);
+        } else {
+          await request.put(`${url}/${get().selected}`, data);
+        }
+
+        set((state) => ({ ...state, activeTab: "1", loading: true }));
+        get().getData();
+        form.resetFields();
+      } finally {
+        set((state) => ({ ...state, loading: false, selected: null }));
+      }
+    },
+
+    editData: async (id, form) => {
+      try {
+        set((state) => ({ ...state, loading: true }));
+        let { data } = await request.get(`${url}/${id}`);
+        if (url === "experiences" || url === "education") {
+          const start = dayjs(data?.startDate);
+          const end = dayjs(data?.endDate);
+          data = { ...data, startDate: start, endDate: end };
+        }
+        form.setFieldsValue(data);
+        set((state) => ({ ...state, activeTab: "2", selected: id }));
+      } finally {
+        set((state) => ({ ...state, loading: false }));
+      }
+    },
+  }));
 };
 
 export default crud;

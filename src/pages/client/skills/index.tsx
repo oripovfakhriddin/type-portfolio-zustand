@@ -1,3 +1,5 @@
+import { Fragment,useEffect } from "react";
+
 import {
   Button,
   Col,
@@ -11,11 +13,12 @@ import {
   Tabs,
   TabsProps,
 } from "antd";
-import useSkillsStoreOfClient from "../../../zustand/client/skills";
-import "./style.scss";
-import { useEffect, Fragment } from "react";
+
 import SkillsCard from "../../../components/cards/skills";
 import { LIMIT } from "../../../constants";
+import useSkillsStoreOfClient from "../../../zustand/client/skills";
+
+import "./style.scss";
 
 const ClientSkillsPage = () => {
   const [form] = Form.useForm();

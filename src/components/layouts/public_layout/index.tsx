@@ -1,8 +1,10 @@
 import { Fragment } from "react";
-import PublicHeader from "./header";
-import PublicFooter from "./footer";
-import "./style.scss";
 import { Outlet } from "react-router-dom";
+
+import PublicFooter from "./footer";
+import PublicHeader from "./header";
+
+import "./style.scss";
 
 const PublicLayout = () => {
   return (

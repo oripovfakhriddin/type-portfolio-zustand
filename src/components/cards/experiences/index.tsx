@@ -1,13 +1,17 @@
 import { Fragment } from "react";
-import "./style.scss";
+
 import { Button, Card, Flex, FormInstance } from "antd";
+
 import {
-  ScheduleOutlined,
-  IdcardOutlined,
   AndroidOutlined,
   BarcodeOutlined,
+  IdcardOutlined,
+  ScheduleOutlined,
 } from "@ant-design/icons";
+
 import useExperiencesStoreOfClient from "../../../zustand/client/experiences";
+
+import "./style.scss";
 const ExperiencesCard = ({
   _id,
   workName,
@@ -56,7 +60,7 @@ const ExperiencesCard = ({
               </span>{" "}
               Start date:
             </p>
-            <h3>{startDate.split("T")[0]}</h3>
+            <h3>{startDate?.split("T")[0]}</h3>
           </div>
           <div>
             <p>
@@ -65,7 +69,7 @@ const ExperiencesCard = ({
               </span>{" "}
               End date:
             </p>
-            <h3>{endDate.split("T")[0]}</h3>
+            <h3>{endDate?.split("T")[0]}</h3>
           </div>
         </Flex>
         <div>

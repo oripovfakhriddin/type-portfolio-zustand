@@ -1,6 +1,8 @@
+import { message } from "antd";
+
 import axios from "axios";
 import Cookies from "js-cookie";
-import { message } from "antd";
+
 import { ENDPOINT, TOKEN_PORTFOLIO } from "../constants";
 
 const request = axios.create({

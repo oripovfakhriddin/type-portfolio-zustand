@@ -1,22 +1,23 @@
 import { Fragment } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import ClientLayout from "./components/layouts/client";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
-import AdminSkillsPage from "./pages/admin/skills";
-import AdminEducationPage from "./pages/admin/education";
-import ClientExperiencesPage from "./pages/client/experiences_page";
-import ClientSkillsPage from "./pages/client/skills_page";
-import ClientHomePage from "./pages/client/home_page";
-import DashboardPage from "./pages/admin/dashboard";
-import AdminUsersPage from "./pages/admin/users";
-import AdminPortfoliosPage from "./pages/admin/portfolios";
-import AdminExperiencesPage from "./pages/admin/experiences";
-import useLoginStore from "./zustand/auth/login";
 import AdminLayout from "./components/layouts/admin";
+import ClientLayout from "./components/layouts/client";
 import PublicLayout from "./components/layouts/public_layout";
-import PublicHomePage from "./pages/public/home";
+import DashboardPage from "./pages/admin/dashboard";
+import AdminEducationPage from "./pages/admin/education";
+import AdminExperiencesPage from "./pages/admin/experiences";
+import AdminPortfoliosPage from "./pages/admin/portfolios";
+import AdminSkillsPage from "./pages/admin/skills";
+import AdminUsersPage from "./pages/admin/users";
 import LoginPage from "./pages/auth/login";
 import RegisterPage from "./pages/auth/register";
+import ClientEducationPage from "./pages/client/education";
+import ClientExperiencesPage from "./pages/client/experiences";
+import ClientHomePage from "./pages/client/home";
+import ClientSkillsPage from "./pages/client/skills";
+import PublicHomePage from "./pages/public/home";
+import useLoginStore from "./zustand/auth/login";
 
 function App() {
   const { isAuthenticated, role } = useLoginStore();
@@ -52,7 +53,7 @@ function App() {
 
           <Route
             element={
-              isAuthenticated && role === "admin" ? (
+              isAuthenticated && role === "client" ? (
                 <ClientLayout />
               ) : (
                 <Navigate to="/" />
@@ -65,6 +66,7 @@ function App() {
               element={<ClientExperiencesPage />}
             />
             <Route path="/client-skills" element={<ClientSkillsPage />} />
+            <Route path="/client-education" element={<ClientEducationPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
