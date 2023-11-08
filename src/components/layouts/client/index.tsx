@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { NavLink, Outlet, useLocation } from "react-router-dom";
+import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 
-import { Avatar,Badge, Button, Flex, Layout, Menu, theme } from "antd";
+import { Avatar, Badge, Button, Flex, Layout, Menu, Modal, theme } from "antd";
 
 import {
   AppstoreOutlined,
@@ -12,17 +12,23 @@ import {
   MenuUnfoldOutlined,
   NotificationOutlined,
   ReadOutlined,
+  SnippetsOutlined,
+  UploadOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 
-import "./style.scss";
+import useLoginStore from "../../../zustand/auth/login";
+
 import "./style.scss";
 
 const { Header, Sider, Content } = Layout;
 
 const ClientLayout = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
+
+  const { logOut } = useLoginStore();
 
   const {
     token: { colorBgContainer },
@@ -123,28 +129,29 @@ const ClientLayout = () => {
               icon: <ReadOutlined />,
               label: <NavLink to="/client-education">Education</NavLink>,
             },
-            // {
-            //   key: "/experiences",
-            //   icon: <FieldTimeOutlined />,
-            //   label: <NavLink to="/experiences">Experiences</NavLink>,
-            // },
-            // {
-            //   className: "logout__btn",
-            //   style: {
-            //     fontWeight: 600,
-            //     backgroundColor: "red",
-            //   },
-            //   icon: <UploadOutlined />,
-            //   label: "Log Out",
-            //   onClick: () => {
-            //     Modal.confirm({
-            //       title: "Do you want to exit ?",
-            //       onOk: () => {
-            //         logOutFunc();
-            //       },
-            //     });
-            //   },
-            // },
+            {
+              key: "/client-portfolios",
+              icon: <SnippetsOutlined />,
+              label: <NavLink to="/client-portfolios">Portfolios</NavLink>,
+            },
+            {
+              key: "/log-out",
+              className: "logout__btn",
+              style: {
+                fontWeight: 600,
+                backgroundColor: "red",
+              },
+              icon: <UploadOutlined />,
+              label: "Log Out",
+              onClick: () => {
+                Modal.confirm({
+                  title: "Do you want to exit ?",
+                  onOk: () => {
+                    logOut(navigate);
+                  },
+                });
+              },
+            },
           ]}
         />
       </Sider>

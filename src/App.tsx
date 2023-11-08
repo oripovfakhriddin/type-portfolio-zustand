@@ -15,6 +15,7 @@ import RegisterPage from "./pages/auth/register";
 import ClientEducationPage from "./pages/client/education";
 import ClientExperiencesPage from "./pages/client/experiences";
 import ClientHomePage from "./pages/client/home";
+import ClientPortfoliosPage from "./pages/client/portfolios";
 import ClientSkillsPage from "./pages/client/skills";
 import PublicHomePage from "./pages/public/home";
 import useLoginStore from "./zustand/auth/login";
@@ -67,6 +68,10 @@ function App() {
             />
             <Route path="/client-skills" element={<ClientSkillsPage />} />
             <Route path="/client-education" element={<ClientEducationPage />} />
+            <Route
+              path="/client-portfolios"
+              element={<ClientPortfoliosPage />}
+            />
           </Route>
         </Routes>
       </BrowserRouter>

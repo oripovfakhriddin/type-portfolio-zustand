@@ -184,8 +184,8 @@ const ClientEducationPage = () => {
                     htmlType="submit"
                   >
                     {selected === null
-                      ? " Add Experiences"
-                      : " Save Experiences"}
+                      ? " Add Education"
+                      : " Save Education"}
                   </Button>
                 </Form.Item>
               </Form>

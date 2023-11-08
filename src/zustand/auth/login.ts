@@ -46,6 +46,7 @@ interface LoginStoreType {
   token: string | null;
   role: string | null;
   login: (form: FormInstance, navigate: NavigateFunction) => void;
+  logOut: (navigate: NavigateFunction) => void;
 }
 
 const useLoginStore = create<LoginStoreType>()(
@@ -82,6 +83,20 @@ const useLoginStore = create<LoginStoreType>()(
         } finally {
           set((state) => ({ ...state, loading: false }));
         }
+      },
+
+      logOut: async (navigate) => {
+        set({
+          loading: false,
+          user: null,
+          isAuthenticated: false,
+          token: null,
+          role: null,
+        });
+        Cookies.remove(TOKEN_PORTFOLIO);
+        Cookies.remove(USER_ID);
+        localStorage.removeItem(USER_PORTFOLIO);
+        navigate("/");
       },
     }),
     {

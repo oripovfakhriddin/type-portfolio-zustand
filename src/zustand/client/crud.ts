@@ -1,4 +1,5 @@
 import { FormInstance } from "antd";
+import { RcFile, UploadChangeParam, UploadFile } from "antd/es/upload";
 
 import dayjs from "dayjs";
 import Cookies from "js-cookie";
@@ -6,7 +7,7 @@ import { create } from "zustand";
 
 import { LIMIT, USER_ID } from "../../constants";
 import request from "../../server/request";
-import { PaginationDataTypes } from "../../types";
+import { PaginationDataTypes, PhotoDataTypes } from "../../types";
 
 const crud = <T>(url: string) => {
   interface ApiData {
@@ -16,12 +17,14 @@ const crud = <T>(url: string) => {
 
   interface ClientOfDataStoreType {
     loading: boolean;
+    loadingPhoto: boolean;
     activePage: number;
     search: string;
     selected: string | null;
     data: T[];
     total: number;
     activeTab: string;
+    photoData: PhotoDataTypes | null;
     setActivePage: (page: number) => void;
     setActiveTab: (key: string, form: FormInstance) => void;
     getData: () => void;
@@ -29,26 +32,41 @@ const crud = <T>(url: string) => {
     deleteData: (id: string) => void;
     addData: (form: FormInstance) => void;
     editData: (id: string, form: FormInstance) => void;
+    handlePhoto: (info: UploadChangeParam<UploadFile>) => void;
   }
 
   return create<ClientOfDataStoreType>()((set, get) => ({
     loading: false,
+    loadingPhoto: false,
     data: [],
     search: "",
     selected: null,
     activePage: 1,
     total: 0,
     activeTab: "1",
+    photoData: null,
+
+    handlePhoto: async (info) => {
+      try {
+        set({ loadingPhoto: true });
+        const formdata = new FormData();
+        formdata.append("file", info.file.originFileObj as RcFile);
+        const { data } = await request.post<PhotoDataTypes>("upload", formdata);
+        set({ photoData: data });
+      } finally {
+        set({ loadingPhoto: false });
+      }
+    },
 
     getData: async () => {
       try {
+        set((state) => ({ ...state, loading: true }));
         const params = {
           user: Cookies.get(USER_ID),
           search: get().search,
           page: get().activePage,
           limit: LIMIT,
         };
-        set((state) => ({ ...state, loading: true }));
         const {
           data: {
             data,
@@ -85,6 +103,7 @@ const crud = <T>(url: string) => {
       try {
         set((state) => ({ ...state, loading: true }));
         await request.delete(`${url}/${id}`);
+        set({ activePage: 1 });
         get().getData();
       } finally {
         set((state) => ({ ...state, loading: false }));
@@ -100,6 +119,11 @@ const crud = <T>(url: string) => {
           const start: string = data?.startDate?.toISOString().split("T")[0];
           const end: string = data?.endDate?.toISOString().split("T")[0];
           data = { ...data, startDate: start, endDate: end };
+        }
+
+        if (url === "portfolios") {
+          data = { ...data, photo: get().photoData?._id };
+          console.log(data);
         }
 
         if (get().selected === null) {
@@ -125,6 +149,11 @@ const crud = <T>(url: string) => {
           const end = dayjs(data?.endDate);
           data = { ...data, startDate: start, endDate: end };
         }
+
+        if (url === "portfolios") {
+          set({ photoData: data.photo });
+        }
+
         form.setFieldsValue(data);
         set((state) => ({ ...state, activeTab: "2", selected: id }));
       } finally {

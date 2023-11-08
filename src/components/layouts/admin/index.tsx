@@ -1,15 +1,7 @@
 import { useEffect, useState } from "react";
-import { NavLink, Outlet, useLocation } from "react-router-dom";
+import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 
-import {
-  Avatar,
-  Badge,
-  Button,
-  Flex,
-  Layout,
-  Menu,
-  theme,
-} from "antd";
+import { Avatar, Badge, Button, Flex, Layout, Menu, Modal, theme } from "antd";
 
 import {
   AppstoreOutlined,
@@ -34,6 +26,8 @@ const { Header, Sider, Content } = Layout;
 
 const AdminLayout = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { logOut } = useLoginStore();
   const [collapsed, setCollapsed] = useState(false);
   const { login } = useLoginStore();
   useEffect(() => {}, [login]);
@@ -148,22 +142,22 @@ const AdminLayout = () => {
               label: <NavLink to="/admin-experiences">Experiences</NavLink>,
             },
             {
-              // className: "logout__btn",
-              // style: {
-              //   fontWeight: 600,
-              //   backgroundColor: "red",
-              // },
+              className: "logout__btn",
+              style: {
+                fontWeight: 600,
+                backgroundColor: "red",
+              },
               key: "/salom",
               icon: <UploadOutlined />,
               label: "Log Out",
-              // onClick: () => {
-              //   Modal.confirm({
-              //     title: "Do you want to exit ?",
-              //     onOk: () => {
-              //       logOutFunc();
-              //     },
-              //   });
-              // },
+              onClick: () => {
+                Modal.confirm({
+                  title: "Do you want to exit ?",
+                  onOk: () => {
+                    logOut(navigate);
+                  },
+                });
+              },
             },
           ]}
         />
