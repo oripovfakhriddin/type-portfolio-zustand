@@ -7,6 +7,7 @@ import PublicLayout from "./components/layouts/public_layout";
 import DashboardPage from "./pages/admin/dashboard";
 import AdminEducationPage from "./pages/admin/education";
 import AdminExperiencesPage from "./pages/admin/experiences";
+import AdminMessagesPage from "./pages/admin/messages";
 import AdminPortfoliosPage from "./pages/admin/portfolios";
 import AdminSkillsPage from "./pages/admin/skills";
 import AdminUsersPage from "./pages/admin/users";
@@ -50,6 +51,7 @@ function App() {
               path="/admin-experiences"
               element={<AdminExperiencesPage />}
             />
+            <Route path="/admin-messages" element={<AdminMessagesPage />} />
           </Route>
 
           <Route

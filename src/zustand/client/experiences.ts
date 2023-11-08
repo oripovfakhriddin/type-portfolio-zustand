@@ -8,6 +8,7 @@ interface ClientOfExperiencesType {
   companyName: string;
   startDate: string;
   endDate: string;
+  __v: number;
   user: UserLoginType[];
 }
 

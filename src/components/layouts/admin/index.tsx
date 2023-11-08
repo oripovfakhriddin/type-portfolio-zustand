@@ -11,6 +11,7 @@ import {
   LinkedinOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
+  MessageOutlined,
   NotificationOutlined,
   ReadOutlined,
   UploadOutlined,
@@ -140,6 +141,11 @@ const AdminLayout = () => {
               key: "/admin-experiences",
               icon: <FieldTimeOutlined />,
               label: <NavLink to="/admin-experiences">Experiences</NavLink>,
+            },
+            {
+              key: "/admin-messages",
+              icon: <MessageOutlined />,
+              label: <NavLink to="/admin-messages">Messages</NavLink>,
             },
             {
               className: "logout__btn",
