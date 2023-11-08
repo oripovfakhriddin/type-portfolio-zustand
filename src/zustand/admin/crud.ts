@@ -23,15 +23,19 @@ const crud = <T>(url: string) => {
     selected: string | null;
     data: T[];
     total: number;
-    activeTab: string;
+    isModalOpen: boolean;
+    isModalLoading: boolean;
     photoData: PhotoDataTypes | null;
     setActivePage: (page: number) => void;
-    setActiveTab: (key: string, form: FormInstance) => void;
+    setIsModalOpen: () => void;
+    // setActiveTab: (key: string, form: FormInstance) => void;
     getData: () => void;
     handleSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
     deleteData: (id: string) => void;
     addData: (form: FormInstance) => void;
     editData: (id: string, form: FormInstance) => void;
+    showModal: () => void;
+    closeModal: () => void;
     handlePhoto: (info: UploadChangeParam<UploadFile>) => void;
   }
 
@@ -41,10 +45,20 @@ const crud = <T>(url: string) => {
     data: [],
     search: "",
     selected: null,
+    isModalOpen: false,
+    isModalLoading: false,
     activePage: 1,
     total: 0,
     activeTab: "1",
     photoData: null,
+
+    showModal: () => {
+      set({ isModalOpen: true, selected: null });
+    },
+
+    closeModal: () => {
+      set({ isModalOpen: false });
+    },
 
     handlePhoto: async (info) => {
       try {
@@ -80,14 +94,15 @@ const crud = <T>(url: string) => {
         set((state) => ({ ...state, loading: false }));
       }
     },
+    setIsModalOpen: () => {},
 
-    setActiveTab: async (key, form) => {
-      if (key === "1") {
-        form.resetFields();
-        set((state) => ({ ...state, selected: null, photoData: null }));
-      }
-      set((state) => ({ ...state, activeTab: key }));
-    },
+    // setActiveTab: async (key, form) => {
+    //   if (key === "1") {
+    //     form.resetFields();
+    //     set((state) => ({ ...state, selected: null, photoData: null }));
+    //   }
+    //   set((state) => ({ ...state, activeTab: key }));
+    // },
 
     setActivePage: async (page) => {
       set((state) => ({ ...state, activePage: page }));
@@ -165,7 +180,7 @@ const crud = <T>(url: string) => {
         }
 
         form.setFieldsValue(data);
-        set((state) => ({ ...state, activeTab: "2", selected: id }));
+        set((state) => ({ ...state, isModalOpen: true, selected: id }));
       } finally {
         set((state) => ({ ...state, loading: false }));
       }
