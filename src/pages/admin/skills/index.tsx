@@ -64,7 +64,12 @@ const AdminSkillsPage = () => {
           style={{ width: "auto", flexGrow: 1 }}
           placeholder="Searching..."
         />
-        <Button onClick={showModal} type="dashed">
+        <Button
+          onClick={() => {
+            showModal(form);
+          }}
+          type="dashed"
+        >
           Add skill
         </Button>
       </Flex>

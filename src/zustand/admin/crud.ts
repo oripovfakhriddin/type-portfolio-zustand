@@ -34,7 +34,7 @@ const crud = <T>(url: string) => {
     deleteData: (id: string) => void;
     addData: (form: FormInstance) => void;
     editData: (id: string, form: FormInstance) => void;
-    showModal: () => void;
+    showModal: (form: FormInstance) => void;
     closeModal: () => void;
     handlePhoto: (info: UploadChangeParam<UploadFile>) => void;
     handleUserPhoto: (info: UploadChangeParam<UploadFile>) => void;
@@ -56,8 +56,14 @@ const crud = <T>(url: string) => {
     photoUserData: null,
     urlProtocol: "",
 
-    showModal: () => {
-      set({ isModalOpen: true, selected: null });
+    showModal: (form) => {
+      form.resetFields();
+      set({
+        isModalOpen: true,
+        selected: null,
+        photoData: null,
+        photoUserData: null,
+      });
     },
 
     closeModal: () => {

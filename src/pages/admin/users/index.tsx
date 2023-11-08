@@ -102,7 +102,12 @@ const UsersPage = () => {
             },
           ]}
         /> */}
-        <Button onClick={showModal} type="primary">
+        <Button
+          onClick={() => {
+            showModal(form);
+          }}
+          type="primary"
+        >
           Add users
         </Button>
       </Flex>
