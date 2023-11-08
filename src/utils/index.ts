@@ -5,4 +5,8 @@ const getPhoto = (data: PhotoDataTypes): string => {
   return `${ENDPOINT}upload/${data?._id}.${data?.name?.split(".")[1]}`;
 };
 
-export { getPhoto };
+const getUsersImage = (data: string): string => {
+  return `${ENDPOINT}upload/${data}`;
+};
+
+export { getPhoto, getUsersImage };

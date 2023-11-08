@@ -2,10 +2,9 @@ import { FormInstance } from "antd";
 import { RcFile, UploadChangeParam, UploadFile } from "antd/es/upload";
 
 import dayjs from "dayjs";
-import Cookies from "js-cookie";
 import { create } from "zustand";
 
-import { LIMIT, USER_ID } from "../../constants";
+import { LIMIT } from "../../constants";
 import request from "../../server/request";
 import { PaginationDataTypes, PhotoDataTypes } from "../../types";
 
@@ -26,8 +25,8 @@ const crud = <T>(url: string) => {
     isModalOpen: boolean;
     isModalLoading: boolean;
     photoData: PhotoDataTypes | null;
+    photoUserData: string | null;
     setActivePage: (page: number) => void;
-    setIsModalOpen: () => void;
     // setActiveTab: (key: string, form: FormInstance) => void;
     getData: () => void;
     handleSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -37,6 +36,7 @@ const crud = <T>(url: string) => {
     showModal: () => void;
     closeModal: () => void;
     handlePhoto: (info: UploadChangeParam<UploadFile>) => void;
+    handleUserPhoto: (info: UploadChangeParam<UploadFile>) => void;
   }
 
   return create<ClientOfDataStoreType>()((set, get) => ({
@@ -51,6 +51,7 @@ const crud = <T>(url: string) => {
     total: 0,
     activeTab: "1",
     photoData: null,
+    photoUserData: null,
 
     showModal: () => {
       set({ isModalOpen: true, selected: null });
@@ -72,11 +73,22 @@ const crud = <T>(url: string) => {
       }
     },
 
+    handleUserPhoto: async (info) => {
+      try {
+        set({ loadingPhoto: true });
+        const formdata = new FormData();
+        formdata.append("file", info.file.originFileObj as RcFile);
+        const { data } = await request.post<string>("auth/upload", formdata);
+        set({ photoUserData: data });
+      } finally {
+        set({ loadingPhoto: false });
+      }
+    },
+
     getData: async () => {
       try {
         set((state) => ({ ...state, loading: true }));
         const params = {
-          user: Cookies.get(USER_ID),
           search: get().search,
           page: get().activePage,
           limit: LIMIT,
@@ -94,7 +106,6 @@ const crud = <T>(url: string) => {
         set((state) => ({ ...state, loading: false }));
       }
     },
-    setIsModalOpen: () => {},
 
     // setActiveTab: async (key, form) => {
     //   if (key === "1") {
@@ -138,7 +149,10 @@ const crud = <T>(url: string) => {
 
         if (url === "portfolios") {
           data = { ...data, photo: get().photoData?._id };
-          console.log(data);
+        }
+
+        if (url === "users") {
+          data = { ...data, photo: get().photoUserData };
         }
 
         if (get().selected === null) {
@@ -149,9 +163,10 @@ const crud = <T>(url: string) => {
 
         set((state) => ({
           ...state,
-          activeTab: "1",
+          isModalOpen: false,
           loading: true,
           photoData: null,
+          photoUserData: null,
         }));
         get().getData();
         form.resetFields();
@@ -161,6 +176,7 @@ const crud = <T>(url: string) => {
           loading: false,
           selected: null,
           photoData: null,
+          photoUserData: null,
         }));
       }
     },
@@ -169,6 +185,7 @@ const crud = <T>(url: string) => {
       try {
         set((state) => ({ ...state, loading: true }));
         let { data } = await request.get(`${url}/${id}`);
+
         if (url === "experiences" || url === "education") {
           const start = dayjs(data?.startDate);
           const end = dayjs(data?.endDate);
@@ -179,8 +196,8 @@ const crud = <T>(url: string) => {
           set({ photoData: data.photo });
         }
 
-        form.setFieldsValue(data);
         set((state) => ({ ...state, isModalOpen: true, selected: id }));
+        form.setFieldsValue(data);
       } finally {
         set((state) => ({ ...state, loading: false }));
       }

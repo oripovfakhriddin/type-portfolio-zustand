@@ -117,27 +117,27 @@ const AdminLayout = () => {
               label: <NavLink to="/dashboard">Dashboard</NavLink>,
             },
             {
-              key: "/users",
+              key: "/admin-users",
               icon: <UsergroupAddOutlined />,
               label: <NavLink to="/admin-users">Users</NavLink>,
             },
             {
-              key: "/skills",
+              key: "/admin-skills",
               icon: <AppstoreOutlined />,
               label: <NavLink to="/admin-skills">Skills</NavLink>,
             },
             {
-              key: "/portfolios",
+              key: "/admin-portfolios",
               icon: <LaptopOutlined />,
               label: <NavLink to="/admin-portfolios">Portfolios</NavLink>,
             },
             {
-              key: "/education",
+              key: "/admin-education",
               icon: <ReadOutlined />,
               label: <NavLink to="/admin-education">Education</NavLink>,
             },
             {
-              key: "/experiences",
+              key: "/admin-experiences",
               icon: <FieldTimeOutlined />,
               label: <NavLink to="/admin-experiences">Experiences</NavLink>,
             },
