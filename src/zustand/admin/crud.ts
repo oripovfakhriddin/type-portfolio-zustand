@@ -26,6 +26,7 @@ const crud = <T>(url: string) => {
     isModalLoading: boolean;
     photoData: PhotoDataTypes | null;
     photoUserData: string | null;
+    urlProtocol: string;
     setActivePage: (page: number) => void;
     // setActiveTab: (key: string, form: FormInstance) => void;
     getData: () => void;
@@ -37,6 +38,7 @@ const crud = <T>(url: string) => {
     closeModal: () => void;
     handlePhoto: (info: UploadChangeParam<UploadFile>) => void;
     handleUserPhoto: (info: UploadChangeParam<UploadFile>) => void;
+    handleProtocol: () => void;
   }
 
   return create<ClientOfDataStoreType>()((set, get) => ({
@@ -52,6 +54,7 @@ const crud = <T>(url: string) => {
     activeTab: "1",
     photoData: null,
     photoUserData: null,
+    urlProtocol: "",
 
     showModal: () => {
       set({ isModalOpen: true, selected: null });
@@ -84,6 +87,8 @@ const crud = <T>(url: string) => {
         set({ loadingPhoto: false });
       }
     },
+
+    handleProtocol: () => {},
 
     getData: async () => {
       try {
